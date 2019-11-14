@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+		<!-- 	<h1 v-if="awesome">Vue is awesome</h1>
+			<h1 v-else>oH no</h1> -->
+			<template v-if="loginName === 'userName'">
+				<label>用户名</label>
+				<input type="text" placeholder="请输入你的用户名" key="username-input"/>
+			</template>
+			<template v-else>
+				<label>Email</label>
+				<input type="text" placeholder="请输入您的邮箱">
+			</template>
+			<button type="button" @click="toggle" key="email-input" >切换类型</button>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					awesome:1,
+					loginName:'userName'
+				},
+				methods:{
+					toggle(){
+						this.loginName = ''
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

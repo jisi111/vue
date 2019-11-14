@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+</head>
+<body>
+    <!-- https://segmentfault.com/a/1190000015199363 -->
+    <div id="app">
+        <input type="text" v-model="parentMessage">
+        <hello :message='parentMessage'></hello>
+        <my-component :init-count='initCount'></my-component>
+        <my-component2 :width="40"></my-component2>
+    </div>
+    <script >
+        Vue.component('hello',{
+            props:['message'],
+            template:'<div>{{message}}</div>'
+        })
+
+
+
+        // 业务中会经常遇到两种需要改变prop的情况，一种是父组件传递初始值进来，子组件将它作为初始值保存起来，
+        // 在自己的作用域下可以随意使用和修改。这种情况可以在组件data内再声明一个数据，引用父组件的prop。
+        Vue.component('my-component',{
+            props:['initCount'],
+            template:'<h2>{{count}}</h2>',
+            data(){
+                return {
+                    count:this.initCount+'你是不是啥'
+                }
+            }
+        })
+        // 另一种情况就是prop作为需要被转变的原始值传入，这种情况用计算属性就可以
+            Vue.component('my-component2',{
+                props:['width'],
+                template:'<div :style="style">组件内容</div>',
+                computed:{
+                    style:function(){
+                        return{
+                            width:this.width+'px',
+                            backgroundColor:'red'
+                        }
+                    }
+                }
+            })
+
+        new Vue({
+            el:'#app',
+            data:{
+                parentMessage:'',
+                initCount:'hello,html'
+            }
+        })
+
+
+
+       
+    </script>
+    
+</body>
+</html>

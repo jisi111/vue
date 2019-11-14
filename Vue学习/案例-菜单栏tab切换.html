@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{ margin: 0; padding: 0; }
+			.container,.other-container{
+				margin: auto;
+				width: 400px;
+				overflow: hidden;
+			}
+			.box{
+				width: 400px;
+				margin: 20px auto;
+			}
+			.topnav{
+				width: 100%;
+				height: 30px;
+				background-color: #ff464e;
+				text-align: right;
+				font-size: 0;
+			}
+			.topnav>p{
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				text-align: center;
+				background-color: rgba(0,0,0,.1);
+				font-size: 20px;
+				cursor: pointer;
+			}
+			.topnav>p:hover{
+				background-color: rgba(0,0,0,.3);
+				color: white;
+			}
+			.main{
+				display: flex;
+				margin: 18px;
+				border-bottom: 1px solid #efefef;
+			}
+			.main h3{
+				line-height: 70px;
+				margin-left: 30px;
+				margin-top: 0;
+			}
+			.imgbox{
+				width: 20%;
+				height: 70px;
+			}
+			.other-main{
+				display: inline-block;
+				width: 50%;
+				height: 200px;
+				text-align: center;
+			}
+			.other-container{
+				margin-top: 20px;
+				background-color: white;
+			}
+			.searchBox{
+				margin: 10px 0;
+			}
+			
+			/* 动画 */
+			.v-enter,
+			.v-leave-to{
+				opacity: 0;
+				transform: translateX(10px);
+			}
+			
+			.v-enter-active,
+			.v-leave-active{
+				transition: all .5s ease-in-out;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<div class="box">
+				<div class="topnav">
+					<p @click="com='list'">&#9776;</p>	
+					<p @click="com='otherlist'">···</p>
+				</div>
+				<!--<list v-bind:artdata="articles"></list>-->
+				<!--<otherlist v-bind:artdata="articles"></otherlist>-->				
+				<transition mode='out-in'>
+					<component :is="com" v-bind:artdata='articles'></component>
+				</transition>
+			</div>
+		</div>
+		
+		<template id="list">
+			<!-- v-for不可作用在根元素上！for循环会创建很多个根元素，然而根元素是唯一的 -->
+			<div class="container">
+				<div class="searchBox">
+					<!-- 将数据绑定在这里，拿到输入框的值 -->
+					<input type="text" v-model="keywords" placeholder="请输入搜索内容" class="form-control"/>
+				</div>
+				<!-- 遍历的是search方法中的内容，如果是空的话，将所有内容都遍历出来 -->
+				<div class="main" v-for="(item,i) in search(keywords)" v-bind:key="i">
+					<!--图片容器-->
+					<div class="imgbox">
+						<img v-bind:src="item.image.small" style="width: 100%; height: 100% ;"/>
+					</div>
+					<h3>{{item.title}}</h3>
+				</div>
+			</div>
+		</template>
+		
+		<template id="aroundlist">
+			<div class="other-container">
+				<div class="other-main" v-for="(item,i) in artdata" v-bind:key="i">
+					<img v-bind:src="item.image.large" style="width: 90%; height: 100% ;"/>
+				</div>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			var list = {
+				template: '#list',
+				data: function(){
+					return {
+						// 进行输入的内容双向数据绑定到 input输入框中
+						keywords: ''
+					}
+		       },
+		       props: ['artdata'],
+		       methods: {
+		       		search(keywords){
+		       			// console.log(this.artdata)
+		       			// 循环遍历 artdata中的数据，通过filter过滤出需要的内容
+		       			return this.artdata.filter( item => {
+		       				if(item.title.toLowerCase().includes(keywords.toLowerCase())){
+		       					return item;
+		       				}
+		       			})
+		       		}
+		       }
+			}
+			
+			var otherlist = {
+				template: '#aroundlist',
+				data: function(){
+					return {
+						
+					}
+				},
+				props: ['artdata']
+			}
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					articles: [
+						{
+			                "title": "HTML 教程",
+			                "url": "http://www.runoob.com/html/html-tutorial.html",
+			                "image": {
+			                    "large": "http://static.runoob.com/images/mix/htmlbig.png",
+			                    "small": "http://static.runoob.com/images/icon/html.png"
+			                }
+			            },
+			            {
+			                "title": "CSS 教程",
+			                "url": "http://www.runoob.com/css/css-tutorial.html",
+			                "image": {
+			                    "large": "http://static.runoob.com/images/mix/cssbig.png",
+			                    "small": "http://static.runoob.com/images/icon/css.png"
+			                }
+			            },
+			            {
+			                "title": "JS 教程",
+			                "url": "http://www.runoob.com/js/js-tutorial.html",
+			                "image": {
+			                    "large": "http://static.runoob.com/images/mix/jsbig.jpeg",
+			                    "small": "http://static.runoob.com/images/icon/js.png"
+			                }
+			            },
+			            {
+			                "title": "SQL  教程",
+			                "url": "http://www.runoob.com/sql/sql-tutorial.html",
+			                "image": {
+			                    "large": "http://static.runoob.com/images/mix/sqlbig.png",
+			                    "small": "http://static.runoob.com/images/icon/sql.png"
+			                }
+			            },
+			            {
+			                "title": "Ajax 教程",
+			                "url": "http://www.runoob.com/ajax/ajax-tutorial.html",
+			                "image": {
+			                    "large": "http://static.runoob.com/images/mix/ajaxbig.png",
+			                    "small": "http://static.runoob.com/images/icon/ajax.png"
+			                }
+			            },
+			            {
+			                "title": "Python 教程",
+			                "url": "http://www.runoob.com/pyhton/pyhton-tutorial.html",
+			                "image": {
+			                    "large": "http://static.runoob.com/images/mix/pythonbig.png",
+			                    "small": "http://static.runoob.com/images/icon/python.png"
+			                }
+			            }
+		            ],
+					com: 'list'
+				},
+				methods: {
+					
+				},
+				components: {
+					'list': list,
+					'otherlist': otherlist
+				}
+			})
+		</script>
+	</body>
+</html>

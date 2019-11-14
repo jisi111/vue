@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<!--
+			
+			MVVM
+			
+		-->
+		<!--这一块div控制的区域就是指的是MVVM中的  V-->
+		<div id="app">
+			<p>{{msg}}</p>
+		</div>
+		
+		
+		<script type="text/javascript">
+			/*  Vue不需要人为再手动去操作DOM元素   */
+			var vm = new Vue({
+				el:  '#app',  // element的缩写，表示当前我们的这个 vue 实例要控制页面上哪个区域
+				/*这里的data指的是MVVM中的 M，专门用来保存每个页面的数据*/
+				data: { // data 中存放 el 中要使用到的数据
+					msg: "第一行代码"  // 需要渲染的数据
+				}
+			});
+		</script>
+	</body>
+</html>

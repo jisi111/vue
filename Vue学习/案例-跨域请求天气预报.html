@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			[v-cloak]{  /*解决插值表达式闪烁问题*/
+				display: none;
+			}
+			ul{list-style: none;margin: 0;padding: 0;}
+			.container{
+				margin: 0 auto;
+			}
+			.innerDiv{
+				position: relative;
+				margin: 0 auto;
+				width: 700px;
+			}
+			.main-ul{
+				display: inline-block;
+				margin: 0;
+				width: 100%;
+			}
+			.main-ul li{
+				float: left;
+				width: 20%;
+				height: 270px;
+				border-left: 1px solid white;
+				background-color: rgb(75,91,104);
+			}
+			.main-ul>li:nth-child(1){
+				width: 35%;
+			}
+			.main-ul>li p{
+				color: white;
+				margin: 10px 0;
+			}
+			.main-ul>li:nth-child(1)>p:first-child{
+				display: none;
+			}
+			.main-ul>li:nth-child(1)>p:nth-child(2){
+				font-size: 18px;
+			}
+			.main-ul>li:nth-child(1)>img{
+				margin-bottom: 60px;
+			}
+			.time{
+				font-size: 13px;
+			}
+			.weater-icon{
+				width: 60px;
+				height: 50px;
+			}
+			
+			/* 底部提示内容 */
+			.footer-info{
+				display: inline-block;
+				width: 669px;
+				background-color: rgb(145,162,178);
+			}
+			.footer-info>ul>li{
+				position: relative;
+				float: left;
+				width: 48%;
+				margin-left: 10px;
+				color: white;
+			}
+			.footer-info>ul>li:not(:last-child){
+				border-bottom: 1px solid white;
+			}
+			.hideinfo{
+				/*display: none;*/
+				position: absolute;
+				top: 45px;
+				left: 0;
+				width: 315px;
+				height: 64px;
+				padding: 10px;
+				margin-top: 5px;
+				background-color: white;
+				color: #555;
+				box-shadow: 0 2px 4px rgba(0,0,0,.1);
+				z-index: 5;
+			}
+			.xicon{
+				position: absolute;
+				top: -20px;
+				left: 28px;
+				width: 0px;
+				height: 0px;
+				border: 50px solid;
+				border-color: transparent transparent white transparent;
+				border-width: 11px 10px;
+			}
+			.active{
+				display: block;
+			}
+			.nowtime{
+				position: absolute;
+			}
+			.newtem{
+				position: absolute;
+				top: 30%;
+				left: 8%;
+				font-size: 35px;
+				color: white;
+			}
+			.newtem span{
+				font-size: 18px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div class="container" id="app">
+			<!--<p v-cloak v-for="item in exponent[0]">{{item}}</p>-->
+			<div class="innerDiv">
+				<div class="">
+					<input type="text" placeholder="搜索城市..."/>
+				</div>
+				<!--时间-->
+				<h4 v-cloak>当前所在城市——{{nowcity}}</h4>
+				<!-- 实时温度 -->
+				<p class="newtem" v-cloak>
+					{{newTem}}
+					<span>({{isNow}})</span>
+				</p>
+				<!--每天的天气-->
+				<ul class="main-ul">
+					<!--<p class="nowtime " v-cloak>{{nowtime}}</p>-->
+					<li v-for="(item,index) in exponent[0]" v-bind:key="index" style="text-align: center;">
+						<!--星期x-->
+						<p>{{(index+ctime) | ctimeformate}}</p>
+						<p class="time" v-cloak>{{item.date | timeformate}}</p>
+						<!--天气小图标-->
+						<img v-bind:src="item.dayPictureUrl" class="weater-icon"/>
+						<!--温度-->
+						<p class="time" v-cloak>{{item.temperature}}</p>
+						<!--天气-->
+						<p class="time" v-cloak>{{item.weather}}</p>
+						<!--风向-->
+						<p class="time" v-cloak>{{item.wind}}</p>
+						<!--空气质量-->
+						<p></p>
+					</li>
+				</ul>
+				<div class="footer-info">
+					<ul>
+						<li v-for="(item,index) in indexData" :key="index" @mouseenter="showinfo(index)" @mouseleave="leave(index)">
+							<p v-cloak>{{item.title}} : {{item.zs}}</p>
+							<div class="hideinfo" v-show="current==index">
+								<span class="xicon"></span>
+								<p v-cloak style="margin: 5px 0;color: #666;font-size: 14px;font-weight: 600;">{{item.tipt}} : {{item.zs}}</p>
+								<p v-cloak style="margin: 0;color: #666;font-size: 12px;">{{item.des}}</p>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>	
+	</body>
+	
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$.ajax({
+			type:"post",
+			url:"http://api.map.baidu.com/telematics/v3/weather",
+			async:true,
+			data:{
+				location:"广州",
+				output:"json",
+				ak:"cW96ILwOzpVmoZcWl1vL2T4W"
+			},
+			dataType:"jsonp"
+		}).done(function(data){
+			// console.log(data);
+			var weather_data = [];
+			weather_data.push(data.results[0].weather_data);
+			var city = data.results[0].currentCity;
+			var temperature = data.results[0].weather_data[0].date;
+			var indexData = [];
+			indexData = data.results[0].index;
+			console.log(indexData)
+			var newTem = temperature.substring(14,17);
+			// console.log(temperature);
+			var isNow = temperature.substring(11,13);
+			// 过滤器 
+			Vue.filter('timeformate',function(msg){
+				if(msg.length>2){
+					// console.log(msg.substring(0,2));
+					return msg.substring(2,9)+" "+msg.substring(0,2);
+				}else{
+					return msg;
+				}
+			});
+			
+			Vue.filter('ctimeformate',function(index){
+				// 将传来的下标截取一下
+				// console.log(index.substring(0,1))
+				
+				var nowtime = new Date();
+				var month = nowtime.getMonth()+1; // 因为月份是从0开始，所以要+1
+				var day = nowtime.getDate() + Number( index.substring(0,1) );
+				// return year + "-" + month + "-" + day;
+				return `${month}-${day}`; // 这个写法和上面相同
+			});
+			
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					current: null,
+					ctime: new Date(),
+					nowtep: temperature,
+					newTem: newTem, // 实时温度
+					isNow: isNow,
+					nowcity: city,	// 当前所在城市
+					exponent: weather_data, // 四天天气数据
+					indexData: indexData,
+				},
+				methods: {
+					showinfo: function(index){
+						// this.flag = true;
+						this.current = index;
+					},
+					leave: function(){
+						this.current = null;
+					}
+				},
+				filters: {
+					
+				}
+			})
+		}).fail(function(err){
+			
+		});
+	</script>
+</html>

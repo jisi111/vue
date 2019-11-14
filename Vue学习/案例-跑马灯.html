@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			
+			<button @click="autoplay">走走</button>
+			<button @click="stoplay">停停</button>
+			
+			<h4 style="color: #ff464e;">{{msg}}</h4>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: "vue实现的走马灯文字效果",
+					playText: null // 定时器ID
+				},
+				methods: {
+					// 实现走马灯效果，需要将字符串第一个字符截取(substring)后，添加到字符串末尾
+					/*
+						play: function(){
+						}
+					*/
+					/*
+						autoplay(){
+							setInterval(this.play,500);
+						},
+						play(){ // ES6的书写方式
+							var start = this.msg.substring(0,1);
+							var end = this.msg.substring(1,);
+							this.msg = end + start;
+						}
+					*/
+					/*或者使用如下代码也可以实现*/
+					/*
+						箭头函数  =>
+						相当于：function(){} 的简写
+						它不会绑定this
+					*/
+					autoplay(){
+						// var newthis = this; // 暂存全局的this
+						if(this.playText!=null) return; // 阻止重复触发定时器
+						this.playText = setInterval(()=>{
+							var start = this.msg.substring(0,1);
+							var end = this.msg.substring(1,);
+							this.msg = end + start;
+						},100)
+					},
+					stoplay(){
+						clearInterval(this.playText);
+						this.playText = null; // 每当清除一次定时器，重新赋值为null
+					}
+				}
+			})
+			
+			
+		</script>
+	</body>
+</html>

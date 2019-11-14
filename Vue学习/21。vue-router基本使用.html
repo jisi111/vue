@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.login,.register{
+				margin: 10px;
+				display: inline-block;
+				width: 100px;
+				line-height: 35px;
+				background-color: #5e5e5e;
+				text-align: center;
+				color: white;
+				cursor: pointer;
+			}
+			/* 路由高亮的第一种方式，通过默认类名，给路由选取添加样式 */
+			/*.router-link-active{
+				background-color: #ff464e;
+			}*/
+			
+			/* 路由高亮的第二种方式，通过自定义类名，在组件中进行注册，也可以添加样式 */
+			.comActive{
+				background-color: #ff464e;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			
+			<!-- 通过to属性可以切换到指定的组件，通过tag属性可以定义该标签是什么标签 -->
+			<router-link to="/login" tag="div" id="login" class="login">登录</router-link>
+			<router-link to="/register" tag="div" id="register" class="register">注册</router-link>
+			<!-- 路由匹配到的组件将渲染在这里 -->
+			<router-view></router-view>
+			
+		</div>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			
+			var login = {
+				template: '<h1>登录页面组件</h1>'
+			};
+			
+			var register = {
+				template: '<h1>注册页面组件</h1>'
+			};
+			
+			// 创建一个路由对象，在  new 一个路由对象的时候，可以为构造函数传递一个配置对象
+			var routerObj = new VueRouter({
+				// routes 这个即是配置对象，表示路由匹配规则的
+				routes: [ // 路由匹配规则
+					// 每个路由都是一个对象，这个对象的身上必须有两个属性：
+					// 1. path。 表示监听  哪个路由连接的地址
+					// 2. component。表示如果路由是前面匹配到的path，则展示相应的组件
+					// 这里的 redirect 和 node 中的redirect 不一样
+					{ path: '', redirect: '/login'},
+					{ path: '/login', component: login},
+					{ path: '/register', component: register}
+				],
+				// 亦可通过	linkActiveClass  设置全局的
+				linkActiveClass: 'comActive' 
+			});
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				// 将路由规则对象，注册到vm上，用来监听url地址的变化，然后展示相应的组件
+				router: routerObj
+			})
+		</script>
+	</body>
+</html>

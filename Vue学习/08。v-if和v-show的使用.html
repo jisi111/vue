@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<input type="button" value="开关" v-on:click="change"/>
+			<input type="button" name="" id="" value="新的开关" v-on:click="flag=!flag"/>
+			<!--
+				通过v-if控制的元素，是通过删除或者重新创建元素来控制元素的
+				通过v-show控制的元素，是通过设置元素的display：none
+				------------
+				v-if：有较高的切换性能消耗
+				v-show：有较高的初始化渲染消耗
+			-->
+			
+			<!-- 如果元素涉及到频繁的切换，最好不要使用v-if，应使用v-show -->
+			<!-- 如果元素永远不会被用户使用的时候看到，则推荐使用v-if -->
+			<h3 v-if="flag">通过v-if控制的内容</h3>
+			
+			<h3 v-show="flag">通过v-show控制的内容</h3>
+			
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					flag:true
+				},
+				methods: {
+					change: function(){
+						this.flag = !this.flag;
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

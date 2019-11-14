@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue-v2.5.21.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!-- v-bind 只能实现单项数据绑定 -->
+			<h3>{{msg}}</h3>
+			<!-- v-model 只能够实现表单数据和Model中数据的双向数据绑定  -->
+			<!-- 注意！v-model 只能使用在表单元素上 -->
+			<input type="text" v-model="msg"/>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: '这是一行数据文字'
+				},
+				methods: {
+					show: function(){
+						console.log(this.msg)
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

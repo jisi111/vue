@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <!-- https://segmentfault.com/a/1190000015157007 -->
+     <template id="my-button">
+            <button>点击我123555533</button>
+        </template>
+    <!-- 第一种组件创建的方式以及使用 -->
+    <!-- 
+        创建Vue的组件都有三个基本步骤是【1、创建组件构造器 2、注册组件 3、使用组件】
+        1.调用Vue.extend()方法 创建组件构造器
+        2.调用 Vue.component()方法 注册组件
+        3.在Vue实例范围内 使用组件
+    -->
+    <div id="app">
+        <!-- 组件在使用的时候，如果有驼峰命名法，需要在前面加上“-”并将大写的字母改为小写进行调用 -->
+        <!-- 如果没有使用，直接调用即可 -->
+        <my-button></my-button>
+        <!-- <my-button></my-button> -->
+        <!-- <mybutton></mybutton> -->
+
+        <hello-vue></hello-vue>
+        <hello-js></hello-js>
+        <my-first></my-first>
+         <!-- 
+             Vue组件的模板在某些情况下受到HTML的限制，比如table里面只允许<tr></td>等这些元素，
+            所以在table内直接使用组件是无效的，这时可以用is属性来挂载组件
+            常见的被限制的元素还有<ul></ol><select>
+        -->
+        <table style="background-color: blue;">
+            <tbody is="hello-js">
+               
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+     
+    
+    
+    </script>
+
+    <script>
+        // 1.使用 Vue.extend() 创建**一个组件构造器**
+        var myButton = Vue.extend({
+            // 模板选项
+            //template 属性用于定义组件要渲染的HTML,简单的理解这个属性用来定义组件的模板（也就是Html结构）
+            template: '<button>点击我</button>'
+        })
+        // 注册组件,并指定组件的标签，组件的HTML标签为<my-button>
+        //使用Vue.component()注册组件，在注册组件时需要提供两个参数，
+        // 第一个参数是组件的标签(my-button),第二个参数是组件构造器(myButton)
+        // 组件应该挂在到Vue实例，否则不会生效。同一个组件可以同时挂在到多个Vue实例
+        Vue.component('myButton', myButton) //组件名 构造器
+
+
+
+
+
+        // 全局注册 Vue.component(tagName,options)可以注册一个全局的组件，
+        // 也就是说在注册以后可以用在任何新创建的Vue根实例(new Vue)的模板中
+        //租界内注册以后，就可以作为自定义元素<my-button/>，在一个实例的模板中使用，
+        // 注意，在初始化跟实例之前注册组件
+        // 自定义标签的命名，尽量是小写，并且包含一个锻钢
+        Vue.component('hello-vue',{
+            template:'<h5>hello,vue.js</h5>'
+        })
+        Vue.component('my-first',{
+            template:'#my-button'
+        })
+       
+       
+        new Vue({
+            el: '#app',
+            data: {
+
+            },
+            //局部注册:只可以在该vue实例使用
+            components:{
+                'hello-js':{
+                    template:'<h2>你好世界</h2>'
+                }
+            }
+        })
+
+    </script>
+</body>
+
+</html>

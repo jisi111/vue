@@ -1,0 +1,41 @@
+
+// 定义一个变量，@变量名，可以当做字符串来看待，如.@width或者#@width都可以
+// .@width就相当于.width
+@width: 100%; 
+@height: 100px;
+@color: skyblue;
+
+// 让选择器变成动态
+@wrap: wrap;
+.@{wrap}{
+    width: 50%;
+    height: 80px;
+    background-color: @color;
+}
+#@{wrap}{
+    width: 40%;
+    height: 80px;
+    background-color: @color;
+    margin: 5px 0;
+}
+
+.container{
+   width: @width;
+   height: @height;
+   background-color: @color;
+   margin: 5px 0;
+ }
+
+.container2{
+  width: @width;
+  height: @height;
+  background-color: @color;
+  margin: 5px 0;
+}
+
+.container3{
+  width: @width;
+  height: @height;
+  background-color: @color;
+  margin: 5px 0;
+}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			#app{
+				margin: 20px auto;
+				width: 1000px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<!--<div id="app">
+			
+			<combox @func="loadcomments"></combox>
+			<ul class="list-group">
+				<li class="list-group-item" v-for="item in list" v-bind:key="item.id">
+					<span class="badge">用户： {{item.user}}</span>
+					{{item.content}}
+				</li>
+			</ul>
+			
+		</div>
+		
+		<template id="combox" class="form-group">
+			<div class="">
+				<div id="" class="form-group">
+					<label>用户：</label>
+					<input type="text" class="form-control" placeholder="评论内容" v-model="user"/>
+				</div>
+				<div class="form-group">
+					<label>内容</label>
+					<textarea class="form-control" v-model="content"></textarea>
+				</div>
+				<div class="form-group" style="text-align: right;">
+					<input type="button" class="btn btn-primary" value="发表评论" @click="postcomment"/>
+				</div>
+			</div>
+		</template>-->
+		<!--<script type="text/javascript">
+			var commentBox = {
+				template: '#combox',
+				data: function(){
+					return {
+						user: '',
+						content: ''
+					}
+				},
+				methods: {
+					postcomment(){
+						// 评论内容对象
+						var comment = { id: Date.now(), user: this.user, content: this.content}
+						
+						// 尝试从 localStorage 中获取评论，如果有就取出来，没有就为空数组
+						var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+						
+						// 将输入的评论压进数组
+						list.push(comment);
+						
+						// 设置到localStorage中
+						localStorage.setItem('cmts',JSON.stringify(list));
+						this.user = this.content = '';
+						this.$emit('func')
+					}
+				}
+			}
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					list:[
+						{ id: Date.now(), user: '老大', content: '六点钟下班' },
+						{ id: Date.now(), user: '老二', content: '五点钟下班' },
+						{ id: Date.now(), user: '老三', content: '四点钟下班' }
+					]
+				},
+				// 钩子函数，此时 data和methods方法已经被创建完成
+				created(){
+					this.loadcomments();
+				},
+				methods: {
+					loadcomments(){
+						// 将  localstorage中的评论转换成 json 格式
+						var list = JSON.parse(localStorage.getItem('cmts') || '[]');
+						// 将 data 中的数据覆盖
+						this.list = list;
+					}
+				},
+				components: {
+					'combox': commentBox
+				}
+			})
+		</script>-->
+		
+		<div id="app">
+			<!-- 1. 先给组件绑定父组件的方法，子组件通过$emit()发送数据 -->
+			<combox @func="loadcomment"></combox>
+			<ul class="list-group">
+				<li class="list-group-item" v-for="item in list">
+					<span class="badge">用户： {{item.user}}</span>
+					{{item.content}}
+				</li>
+			</ul>
+			
+		</div>
+		
+		<template id="combox" class="form-group">
+			<div class="">
+				<div id="" class="form-group">
+					<label>用户：</label>
+					<input type="text" class="form-control" placeholder="用户" v-model="user"/>
+				</div>
+				<div class="form-group">
+					<label>内容</label>
+					<textarea placeholder="评论内容" class="form-control" v-model="content"></textarea>
+				</div>
+				<div class="form-group" style="text-align: right;">
+					<input type="button" class="btn btn-primary" value="发表评论" @click="postcomment"/>
+				</div>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					list:[
+						{ user: '老大', content: '六点钟下班' },
+						{ user: '老二', content: '五点钟下班' },
+						{ user: '老三', content: '四点钟下班' }
+					]
+				},
+				methods: {
+					// 这个方法通过 $emit() 发送过来的数据，使用 形参 data 接收子组件传过来的参数
+					loadcomment: function(data){
+						this.list.push(data);
+					}
+				},
+				// 自定义私有组件
+				components: {
+					'combox': {
+						template: '#combox',
+						data: function(){
+							return {
+								user: '',
+								content: '',
+							}
+						},
+						methods: {
+							postcomment: function(){
+								var comment = { user: this.user, content: this.content};
+								// 通过 $emit 可以触发 父组件 自定义事件 
+								this.$emit('func',comment);
+								this.user = this.content = ''
+							}
+						}
+						
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

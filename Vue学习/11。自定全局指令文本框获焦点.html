@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!-- 调用自定义指令，绑定自动聚焦指令 -->
+			<input type="text" v-focus v-color="'green'" v-fontweight="900"/>
+			<h2 v-text="msg" v-fontsize="30"></h2>
+		</div>
+		<script type="text/javascript">
+			// 可以使用 Vue.directive() 定义全局的指令  如 v-focus
+			// 其中： 参数1 ： 是指令的名称，在定义的时候，指令的前面不需要添加v，但是调用的时候，前面要加v前缀
+			// 参数2： 是一个对象，这个对象的身上，有一些相关的函数，这些函数可以在特定的阶段，执行相关的函数
+			Vue.directive('focus',{
+				bind: function(el){ // 每当指令绑定到元素上的时候，会执行bind函数，但是只执行一次
+					// 在元素刚绑定指令的时候，还没有插入到DOM中去，这时候，如果调用focus方法是没有用的。
+					// 所以一般样式相关的就使用这个绑定
+					// 所以只有当元素 插入到 DOM 中的时候，才能获取焦点					
+					// 这些钩子函数都被赋予了以下的参数，el：指令所绑定的元素，可以直接操作DOM，binding：一个对象，包括以下属性
+					// ————name：指令名，不包括  v- 前缀
+					// ————value：指令绑定的值，如v-color = "'blue'"，的value值是：blue
+					// ————expression：绑定的字符串形式，如上，expression的值是：'blue'
+				},
+				// 如果涉及到一些操作动作的，就使用inserted 
+				inserted: function(el){ // inserted表示元素 插入到DOM中的时候，会执行inserted函数【触发一次】
+					el.focus();
+				}
+			});
+			Vue.directive('color',{
+				bind: function(el,binding){
+					// 通过binding拿到绑定指令时传过来的值
+					el.style.color = binding.value
+				}
+			})
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					msg: "test"
+				},
+				methods: {
+					
+				},
+				filters: {
+					
+				},
+				// 自定义私有的指令
+				directives: {
+					'fontweight': { // 私有的指令的名字
+						bind: function(el,binding){ // 钩子函数
+							el.style.fontWeight = binding.value
+						}
+					},
+					'fontsize': function(el,binding){
+						el.style.fontSize = parseInt(binding.value) + 'px';
+					}
+					
+				}
+			})
+		</script>
+	</body>
+</html>

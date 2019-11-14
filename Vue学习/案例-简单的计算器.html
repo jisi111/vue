@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<input type="text" v-model="num1"/>	
+			<select v-model="opt">
+				<option value="+">+</option>
+				<option value="-">-</option>
+				<option value="*">*</option>
+				<option value="/">/</option>
+			</select>
+			<input type="text" v-model="num2"/>
+			<button @click="show">计算</button>
+			<h4>结果为：{{total}}</h4>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					num1: 0,
+					num2: 0,
+					opt: '+',
+					total: 0
+				},
+				methods: {
+					show(){ // 计算方法
+						/*switch (this.opt){
+							case '+':
+								this.total = parseInt(this.num1) + parseInt(this.num2);
+								break;
+							case '-':
+								this.total = this.num1 - this.num2;
+								break;
+							case '*':
+								this.total = this.num1 * this.num2;
+								break;
+							case '/':
+								this.total = this.num1 / this.num2;
+								break;
+							default:
+								break;
+						}*/
+						// 更加简便的写法
+						var str = 'parseInt(this.num1)'+this.opt+'parseInt(this.num2)';
+						this.total = eval(str)
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

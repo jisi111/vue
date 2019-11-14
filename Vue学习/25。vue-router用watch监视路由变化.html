@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<router-link to='/login'>登录</router-link>
+			<router-link to='/register'>注册</router-link>
+			<router-view></router-view>
+		</div>
+		
+		<template id="login">
+			<div id="">
+				<h1>{{msg}}</h1>
+			</div>
+		</template>
+		
+		<template id="register">
+			<div id="">
+				<h1 ref='registermsg'>{{msg}}</h1>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			var login = {
+				template: '#login',
+				data(){
+					return {
+						msg: '欢迎进入登录页面'
+					}
+				},
+				methods: {
+				}
+			}
+			
+			var register = {
+				template: '#register',
+				data: function(){
+					return {
+						msg: '欢迎注册新用户'
+					}
+				}
+			}
+			
+			var routerObj = new VueRouter({
+				routes: [
+					{ path: '/login', component: login},
+					{ path: '/register', component: register}
+				]
+			})
+			
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				router: routerObj,
+				watch: {
+					'$route.path': (newval,oldval)=>{
+						console.log("新的值"+newval+"----"+"原来的值"+oldval);
+						if(newval == '/login'){
+							console.log('欢迎进入登录页面')
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

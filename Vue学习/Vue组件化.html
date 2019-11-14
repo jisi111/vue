@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="setApp">
+			<!--
+				1、首先，引入vue文件，其次再引入自己创建的vue组件的js文件，之后再引入页面的js文件
+				2、在页面上建立 Vue 实例，初始化 data 中的数据，以及methods中的方法
+				3、在组件js文件中创建子组件，格式如下
+					Vue.component('创建的组件名称——既自定义的标签名',{
+						
+						// 创建组件：书写正确的标签，并用 + 号连接起来，并在该属性的结尾加上逗号
+						template: '', 
+						
+						// 如果要使用父组件上的数据和方法，要使用 props 属性
+						// 注意：props中的数据全部都是由父组件传递给子组件的，并且不可以修改父组件中的值
+						props: [], 
+						
+						// 这里进行组件的方法的定义
+						methods: {
+							someFunction: function(){
+								this.$emit(''); // $emit触发的是子组件上自己绑定的方法
+							}
+						} 
+					});
+				
+			-->
+			
+			<!-- 这里引用的是 component.js 中的组件 -->
+			<!-- @+子组件中绑定的方法名=" 父组件中的方法名 " 子组件即可使用父组件上的方法 -->
+			<!-- 双向数据绑定：如果父组件中的数据使用了驼峰命名法，那么在组件上绑定的时候，需要用 '-' 连接符，然后接上原始的数据名 -->
+			<list @a="changeindex()" :prevent-index="preventIndex"></list>
+		</div>
+	</body>
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/component.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var setApp = new Vue({
+			el: '#setApp',
+			data: {
+				preventIndex: 20
+			},
+			methods: {
+				changeindex: function(sonData){
+//					alert('子组件传来的数据————'+sonData);
+					return this.preventIndex *= 5;
+				}
+			}
+		});
+	</script>
+</html>

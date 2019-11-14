@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			h2{
+				font-weight: 400;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!-- 循环普通的数组 -->
+			<!-- 在v-for后面定义的循环的变量(item)中,再定义一个i,代表其对应循环的下标  -->
+			<!--<h2 v-for="(item,i) in list">数组索引值：{{i}}-----对应的值为：{{item}}</h2>-->
+			
+			<!-- 循环包含对象的数组 -->
+			<!--<h2 v-for="(user,i) in objlist">第{{i+1}}位用户的id为：{{user.id}} ———— 该用户的姓名为: {{user.name}} ———— 当前共有用户：{{objlist.length}}</h2>-->
+			
+			<!-- 遍历对象属性 value-key-i 第三个值为索引值,key 属性是必须的-->
+			<!--<h2 v-for="(val,key,i) in Tom">键值：{{val}}---键名：{{key}}--下标：{{i}}</h2>-->
+			
+			<!-- 遍历数字，下标从1开始 -->
+			<!--<h2 v-for="item in 10">这是第 {{item}} 次循环</h2>-->
+			
+			<ul>
+				<li v-for="(value,key) in addClass" v-text="key"></li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					list: [1,2,3,4,5,6,7],
+					objlist: [
+						{id: 1001,name: 'user1'},
+						{id: 1002,name: 'user2'},
+						{id: 1003,name: 'user3'},
+						{id: 1004,name: 'user4'}
+					],
+					Tom:{
+						name: "托尼托尼.乔巴",
+						sex: "驯鹿",
+						price: "50贝利"
+					},
+					addClass: {
+						"初中": {
+							5258: "七年级",
+							5259: "八年级",
+							5260: "九年级",
+							89717: "六年级",
+						},
+						"小学": {
+							89712: "一年级",
+							89713: "二年级",
+							89714: "三年级",
+							89715: "四年级",
+							89716: "五年级",
+							89717: "六年级",
+						}
+					}
+				},
+				methods: {
+					
+				}
+			})
+		</script>
+	</body>
+</html>

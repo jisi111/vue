@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue-resource.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			ul{list-style: none;}
+			*{margin: 0; padding: 0;}
+			li img{
+				width: 300px;
+				height: 335px;
+			}
+			ul{
+				margin: 0 auto;
+				width: 1200px;
+				height: auto;
+				background-color: #8C8C8C;
+			}
+			ul>li{
+				float: left;
+				margin-top: 10px;
+				margin-left: 20px;
+				width: 300px;
+				text-align: center;
+				border: 1px solid #eee;
+			}
+			li>p{
+				font-size: 12px;
+				color: #444;
+			}
+			li h3{
+				font-size: 20px;
+				color: #555;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<input type="button" value="发起get请求" v-on:click="getInfo"/>
+			<input type="button" value="发起post请求" v-on:click="postInfo"/>
+			<input type="button" value="发起JSONP请求" v-on:click="jsonpInfo"/>
+			<div class="">
+				<ul>
+					<li v-for="item in msg[0]">
+						<img v-bind:src="item.img"/>
+						<h3>{{item.goods_name}}</h3>
+						<p>{{item.desc}}</p>
+						<p style="color: #ff464e;font-size: 16px;">¥ {{item.goods_price}}</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: []
+				},
+				methods: {
+					getInfo(){  // 发起get请求函数
+						// 当发起  get 请求之后，通过 .then 来设置成功的回调函数
+						this.$http.get('./js/homeDate.json').then(function(result){
+							// 通过 result 或者 result.body 拿到服务器返回的成功的数据
+							console.log(result)
+						})
+					},
+					postInfo(){ // 发起get请求函数
+						// 手动发起的 post 请求，默认没有表单格式，所以有的服务器处理不了，
+						// 通过post方法的第三个参数，设置提交内容的类型为普通表单数据格式
+						this.$http.post('./js/homeDate.json',{},{ emulateJSON: true})
+						.then(result => {
+							console.log(result)
+						})
+					},
+					jsonpInfo(){
+						// 跨域请求小米官网数据内容
+						this.$http.jsonp('https://a.huodong.mi.com/flashsale/getslideshow').then(result=>{
+							console.log(result.body.data.list.list)
+							return this.msg.push(result.body.data.list.list);
+						})
+					}
+				},
+				filters: {
+					
+				}
+			});
+		</script>
+	</body>
+</html>

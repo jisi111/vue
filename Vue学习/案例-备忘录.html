@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{ margin: 0; padding: 0;}
+			.isOk,.isDel{
+				display: inline-block;
+				width: 70px;
+				height: 30px;
+				background-color: #eee;
+				color: #666;
+				border-radius: 10px;
+				border: 1px solid #888;
+				font-size: 14px;
+				text-align: center;
+				line-height: 30px;
+				margin: 0;
+			}
+			.container{
+				margin: 20px auto;
+				width: 450px;
+				min-height: 300px;
+				background-color: #f5f5f5 ;
+				overflow: hidden;
+			}
+			.titbox{
+				padding: 20px 0;
+				text-align: center;
+				border-bottom: 1px solid #888;
+			}
+			.tit-radius{
+				margin: 0 auto;
+				width: 70px;
+				height: 70px;
+				border-radius: 50%;
+				background-color: #337ab7;
+				overflow: hidden;
+			}
+			.tit-radius p{
+				font-size: 14px;
+				margin: 13px 0 5px 0;
+				color: white;
+			}
+			.tit-radius span{
+				font-size: 16px;
+				color: white;
+			}
+			
+			.infobox{
+				text-align: center;
+				border-bottom: 1px solid #888;
+				padding: 20px 0;
+			}
+			.getinfo{
+				width: 75% !important;
+				display: inline-block !important;
+			}
+			.manager-list{
+				text-align: center;
+				padding: 5px 0;
+				margin: 10px 35px;
+				border-bottom: 1px dashed #8f8f8f;
+			}
+			.inp-txt{
+				display: inline-block;
+				width: 200px;
+				vertical-align: top;
+				text-align: center;
+				line-height: 30px;
+				font-size: 18px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			.del-txt{
+				text-decoration: line-through;
+				color: #999;
+			}
+			
+			.v-enter,.v-leave-to{
+				opacity: 0;
+				transform: translateX(50px);
+			}
+			.v-enter-active,.v-leave-active{
+				transition: all .5s ease-in-out;
+			}
+			
+			.v-move{
+				transition: all .6s ease;
+			}
+			
+			.v-leave-active{
+				position: absolute;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<div class="container panel panel-primary">
+				<div class="titbox">
+					<div class="tit-radius">
+						<p>今日事项</p>
+						<span>{{list.length}}</span>
+					</div>
+				</div>
+				<div class="infobox panel-body form-inline">
+					<input type="text" class="form-control getinfo" placeholder="请输入事项" v-model="str"/>
+					<input type="button" class="btn btn-primary" value="添加" @click="postlist"/>
+				</div>
+				<h4>正在进行事项</h4>
+				
+				<transition-group>
+					<div class="manager-list" v-for="(item,index) in list" v-bind:key="index">
+						<p class="isOk" @click="compthing(index)">完成事项</p>
+						<span class="inp-txt">{{item}}</span>
+						<p class="isDel" @click="delist(index)">彻底删除</p>
+					</div>
+				</transition-group>
+				<!-- 子组件，用于接收父组件已经完成的事项  -->
+				<complate v-bind:parentsmsg='sendata' @func='getdata'></complate>
+			</div>
+		</div>
+		
+		<template id="complete">
+			<div>
+				<div class="body">
+					<h4>已完成事项</h4>
+					<transition-group>
+						<div class="manager-list" v-for="(item,index) in parentstr" v-bind:key='index'>
+							<p class="isOk" @click="replaying(index)">恢复进行</p>
+							<span class="inp-txt del-txt">{{item}}</span>
+							<p class="isDel" @click="destorys(index)">彻底删除</p>
+						</div>
+					</transition-group>
+				</div>
+			</div>
+		</template>
+	</body>
+	
+	<script type="text/javascript">
+		var complate = {
+			template: '#complete',
+			props: ['parentsmsg'],
+			data: function(){
+				return {
+					parentstr: []
+				}
+			},
+			methods: {
+				replaying(index){
+					var str = this.parentstr[index];
+					this.$emit('func',str);
+					this.parentstr.some( (item,i)=>{
+						if(item == this.parentstr[index]){
+							this.parentstr.splice(i,1);
+							return true;
+						}
+					});
+				},
+				destorys(index){
+					this.parentstr.some( (item,i)=>{
+						if(item == this.parentstr[index]){
+							this.parentstr.splice(i,1);
+							return true;
+						}
+					});
+				}
+			},
+			// 使用监听属性
+			watch: {
+				// 监听props中的值，如果当它发生改变的时候，执行以下方法
+				parentsmsg: function(newval,oldval){
+					this.parentstr.push(newval);
+				}
+			}
+		}
+		
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				str: '',
+				sendata: '',
+				list: ['吃早饭','吃午饭','吃晚饭'] // 输入的事项
+			},
+			methods: {
+				// 获取子组件的数据
+				getdata(data){
+					console.log(data);
+					this.list.push(data)
+				},
+				// 完成事项
+				compthing(index){
+					// console.log(index);
+					this.sendata = this.list[index];
+					this.list.some( (item,i)=>{
+						if(item == this.list[index]){
+							this.list.splice(i,1);
+							return true;
+						}
+					});
+				},
+				// 事项添加
+				postlist(){
+					this.list.push(this.str)
+				},
+				// 事项删除
+				delist(index){
+					this.list.some( (item,i)=> {
+						if(item == this.list[index]){
+							this.list.splice(i,1);
+							return true;
+						}
+					});
+				}
+			},
+			components: {
+				'complate': complate
+			}
+		})
+	</script>
+</html>

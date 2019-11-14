@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.addicon,.lessicon{
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				background-color: #888;
+				color: white;
+				text-align: center;
+			}
+			tbody,th{
+				text-align: center;
+			}
+			tr{
+				width: 100%;
+			}
+			[v-cloak]{
+				display: none;
+			}
+			.numBox{
+				display: inline-block;
+				min-width: 30px;
+			}
+			.totalbox{
+				text-align: right;
+			}
+			
+			.v-enter,.v-leave-to{
+				opacity: 0;
+				transform: translateY(100px);
+			}
+			/*
+			 *   enter-active： 入场动画
+			 * 	 leave-active：离场动画
+			 * */
+			.v-enter-active,.v-leave-active{
+				transition: all .5s ease-in-out;
+			}
+			.v-move{
+				transition: all .6s ease;
+			}
+			.trbox,.trbox>td{
+				position: relative;
+			}
+			.v-leave-active{
+				position: absolute;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<div class="body">
+				
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">添加商品</h3>
+					</div>
+					<div class="panel-body form-inline">
+						<label>
+							商品编号：
+							<input type="text"  class="form-control" v-model="id"/>
+						</label>
+						<label>
+							商品名称：
+							<input type="text" class="form-control" v-model="name"/>
+						</label>
+						<label>
+							商品价格：
+							<input type="text" class="form-control" v-model="price"/>
+						</label>
+						<label>
+							商品数量：
+							<input type="text" class="form-control" v-model="num"/>
+						</label>
+						<input type="button" value="添加" class="btn btn-primary" @click="addGoods"/>
+					</div>
+				</div>
+				
+				<table class="table table-bordered table-hover table-striped">
+					<thead>
+						<tr>
+							<th>商品编号</th>
+							<th>商品名称</th>
+							<th>商品价格</th>
+							<th>数量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<!--
+						tbody 标签比较特殊，如果需要使用过渡组的话，需要使用is属性绑定transition-group
+					-->
+					<tbody is="transition-group">
+						<tr v-for="(item,index) in list" v-bind:key="item.id" class="trbox">
+							<td v-cloak>{{ item.id }}</td>
+							<td v-cloak>{{ item.name }}</td>
+							<td v-cloak>{{ item.price }}</td>
+							<td v-cloak>
+								<span class="lessicon" @click="reduceNum(item.id)">-</span>
+								<span class="numBox">{{ item.num }}</span>
+								<span class="addicon" @click="addNum(item.id)">+</span>
+							</td>
+							<td v-cloak>
+								<input type="button" value="删除" v-on:click="del(item.id)"/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="panel panel-primary totalbox ">
+					<div class="panel-heading">
+						<p class="panel-title" style="font-size: 20px;">总价格：<span >{{total}}</span> RMB</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<template id="phone">
+			<div>
+				
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					id: '',
+					name: '', // 商品名称
+					price: 0,
+					num: 1, // 数量
+					total: null, // 总价
+					list: [
+						{ id: 1, name: 'iPhone 8', price: 5088, num: 1 },
+						{ id: 2, name: 'iPhone Xs', price: 8699, num: 1 },
+						{ id: 3, name: 'iPhone Xr', price: 6499, num: 1 },
+						{ id: 4, name: 'iPhone 6s', price: 4399, num: 1 },
+						{ id: 5, name: '魅族Max 16', price: 3099, num: 1 },
+						{ id: 6, name: '华为Mate 20', price: 3499, num: 1 },
+						{ id: 7, name: '三星', price: 8899, num: 1 }
+					]
+				},
+				methods: {
+					del: function(id){
+						this.list.some((item,i)=>{
+							if(item.id == id){
+								console.log(i)
+								this.list.splice(i,1);
+								this.total -=  item.price*item.num;
+								return true;
+							}
+						});
+					},
+					addNum: function(id){
+						console.log(id)
+						// 注意在操作list的时候下标和编号是差了1的
+						//this.list[id-1].num++;
+						//this.total += this.list[id-1].price;
+						
+						this.list.some((item,i)=>{
+							if(item.id == id){
+								console.log(i);
+								this.list[i].num++;
+								this.total += this.list[i].price;
+								return true;
+							}
+						});
+					},
+					reduceNum: function(id){
+						this.list.some((item,i)=>{
+							if(item.id == id){
+								if(this.list[i].num<=1){
+								this.list[i].num = 1;
+								}else{
+									this.list[i].num--;
+									this.total -= this.list[i].price
+								}
+							}
+						});
+					},
+					addGoods: function(){
+						var newgoods = {
+							id: this.id,
+							name: this.name,
+							price: Number(this.price),
+							num: this.num
+						}
+						this.list.push(newgoods);
+						this.total += newgoods.price;
+						this.id = this.name = this.price = ''
+					}
+				},
+				created(){
+					var num = 0;
+					for(var i=0; i<this.list.length; i++){
+						num += this.list[i].price;
+					}
+					this.total = num;
+				}
+			})
+		</script>
+	</body>
+</html>

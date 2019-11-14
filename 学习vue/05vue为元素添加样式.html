@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+    <style>
+            .ftcolor{
+                color:red;
+            }
+            .thin{
+                font-weight: 400;
+            }
+            .italic{
+                font-style: initial;
+            }
+            .active{
+                letter-spacing: 0.5rem;
+                color: blue;
+            }
+        
+        </style>
+</head>
+<body>
+ <div id="app">
+     <!-- 
+         通过class为元素添加样式
+         第一种方式：
+            传递一个数组，在数组中通过括号括起来的每一个样式。注意：需要使用数据绑定 v-bind
+        第二种方式：
+            在数组中使用三元表达式，根据data中邦洞的数据是否添加该样式
+        第三种方式：
+            在数组中使用 对象 来代替 单元表达式，可以提高代码可读性
+        第四种方式：
+            在class中使用v-bind绑定对象的时候，对象的属性是类名
+      -->
+      <h1 :class="['thin','ftcolor']">这是一个非常大的标题，第一种方式</h1>
+      <h1 :class="['thin','ftcolor',flag?'active':'']">这是一个非常大的标题，第二种方式</h1>
+      <h1 :class="['thin','ftcolor',{'active':flag}]">这是一个非常大的标题，第三种方式！</h1>
+      <h1 :class="[classobj]">这是一个非常大的标题，第四种方式！</h1>
+
+
+      <!-- ----------------分隔线--------------- -->
+      <!-- 
+          为元素添加行间样式
+          第一种方式：
+            直接在: style内写上样式
+          第二种方式：
+            在data中以对象的形式定义元素的样子，然后在行内调用
+            第三种方式：
+                若想在行内使用多种样式形式，则使用数组
+       -->
+       <h2 :style="{color:'pink','font-size':'20px'}">这是行内样式。第一方式！！！</h2>
+       <h2 :style='styleobj'>这是行内样式，第二种方式！！</h2>
+       <h2 :style="[styleobj,styleobj1]">这是行内样式，第三种方式!!</h2>
+ </div>
+ <script>
+     var vm = new Vue({
+        el:'#app',
+        data:{
+            flag:true,
+            classobj:{ftcolor:true,thin:true,italic:true,active:true},
+            styleobj:{color:'pink','font-weight':'200'},
+            styleobj1:{fontStyle:'italic'}
+        },
+        methods:{
+
+        }
+     });
+ </script>
+</body>
+</html>

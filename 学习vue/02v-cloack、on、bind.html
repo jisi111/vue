@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+    <style>
+    [v-cloak]{
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- v-cloack解决差值表达式在页面加载未完成的时候会显示的问题（会闪烁） -->
+        <p v-cloak>在后面插入一句话：{{msg}}</p>
+        <!-- v-text也可以将数据插入页面上 -->
+        <!-- 
+            和其他插入数据的方式的区别:
+                1. 该方式插入数据到页面上不存在闪烁问题
+                2.该方式插入数据会覆盖原本标签中的内容，而插值表达式不会
+         -->
+         <h4 v-text='msg'></h4>
+         <!-- 
+             v-html可以将内容中的标签创建出来放到页面上
+             它也会将标签原本的内容覆盖掉
+          -->
+          <p v-html='msg2'></p>
+
+          <!-- 
+              v-bind 是vue提供绑定属性的指令
+              v-bind在使用的时候，后面绑定的属性的引号内可以当做js代码执行
+              <input type = "button" value = '按钮' v-bind:title="title+'-这是添加上的代码'"
+           -->
+           <!-- v-bind 可以被简写为一个冒号: 如下所示 -->
+           <input type="button" value="按钮" :title="title+'-这是添加上的代码'" id="btn">
+
+           <!-- 
+               vue中 提供了v-on:时间绑定机制
+               v-on:click = 'show'
+               该方法和js一样可以直接绑定时间后执行方法
+               该属性可以被缩写为 ： @
+               @click
+            -->
+            <input type="button" value="按钮" v-bind:title="title" @click = 'show'>
+            <script>
+                var vm  = new Vue({
+                    el:'#app',
+                    data:{
+                        msg:'hello world',
+                        msg2:'<h1>这是一行h1标签</h1>',
+                        title:'提示文本',
+                    },
+                    methods:{
+                        show:function(){
+                            alert('通过v-on属性绑定的点击时间执行了')
+                        }
+                    }
+                });
+            
+            </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!-- 可以使用多个过滤器 -->
+			<h2>{{ msg | msgformate | addStr}}</h2>
+			<h3>{{ msg1 | timeformate }}</h3>
+		</div>
+		<div id="se-app">
+			<!-- 因为需要过滤器需要有参数，所以传一个空字符   -->
+			<h3>当前时间：{{nowtime | dataformate('') }}</h3>
+		</div>
+		<script type="text/javascript">
+			// 定义一个全局的过滤器，名字叫做 msgformate,它和插值表达式的名字相同
+			Vue.filter('msgformate',function(msg){
+				// replace 可以通过传  正则表达式的形式,替换掉所有匹配的内容
+				return msg.replace(/爱你/g,'神经病');
+			});
+			Vue.filter('addStr',function(msg){
+				return msg + '开玩笑的啦';
+			});   
+			Vue.filter('timeformate',function(msg1,pattern){
+				var nowtime = new Date(msg1);
+				var year = nowtime.getFullYear();
+				var month = nowtime.getMonth()+1;
+				var day = nowtime.getDate();
+				return year + "-" + month + "-" + day;
+			});    
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					'msg': "因为爱你，爱你中国，爱你就像老鼠爱大米，爱你不是两三天",
+					"msg1": new Date()
+				},
+				methods: {
+					
+				}
+			});
+			var se_vm = new Vue({
+				el: '#se-app',
+				data: {
+					nowtime: new Date()
+				},
+				methods: {
+					
+				},
+				// 定义私有的过滤器
+				// 如果全局的过滤器和私有过滤器重名，优先调用私有过滤器，即采用就近原则
+				filters: {
+					dataformate: function(msg1,pattern){
+						var nowtime = new Date(msg1);
+						var year = nowtime.getFullYear();
+						var month = nowtime.getMonth()+1;
+						var day = nowtime.getDate();
+						var hours,min,secon;
+						if(pattern.toLowerCase() === 'yyyy-mm-dd'){
+							return year + "-" + month + "-" + day;
+						}else{
+							hours = nowtime.getHours().toString().padStart(2,'0');
+							min = nowtime.getMinutes().toString().padStart(2,'0');
+							// .padStart(maxlength,filestr) // 第一个参数是补充的最大长度，第二个是需要补充的字符
+							secon = nowtime.getSeconds().toString().padStart(2,'0'); // 使用ES6的padStart方法，给不足两位的数补充0
+							return `${year}-${month}-${day} ${hours}:${min}:${secon}`;
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

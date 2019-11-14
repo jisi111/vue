@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+</head>
+<body>
+    <!-- 监听属性watch，我们可以通过watch来响应数据的变化 -->
+    <div id="app">
+        <p style="font-size: 25px;">计数器：{{counter}}</p>
+        <button @click="counter++" style="font-size: 25px;">点我</button>
+    </div>
+    <script>
+        var vm  = new Vue({
+            el: ' #app',
+            data:{
+                counter:1
+            }
+        });
+        vm.$watch('counter',function(nval,oval){
+            alert('计数器值得变化 :' + oval + '变为')
+        });
+    </script>
+</body>
+</html>

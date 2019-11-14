@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			th,td{
+				text-align: center;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">添加品牌</h3>
+				</div>
+				<div class="panel-body form-inline">
+					<label>
+						商品序号：
+						<!-- 通过双向数据绑定给表单元素 -->
+						<input type="text" class="form-control" v-model="id"/>
+					</label>
+					<label>
+						商品名称：
+						<!-- 通过双向数据绑定给表单元素 -->
+						<input type="text" class="form-control" v-model="name"/>
+					</label>
+					<!--<input type="button" value="添加" class="btn btn-primary" v-on:click.prevent="add"/>-->
+					<input type="button" value="添加" class="btn btn-primary" v-on:click="add"/>
+					<label>
+						关键字搜索：
+						<input type="text" class="form-control" v-model="keywords"/>
+					</label>
+				</div>
+			</div>
+			
+			<!--商品渲染表格-->
+			<table class="table table-bordered table-hover table-striped">
+				<thead>
+					<tr>
+						<th>商品序号</th>
+						<th>商品名称</th>
+						<th>时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 通过给每一项绑定id -->
+					<tr v-for="item in search(keywords)" v-bind:key="item.id">
+						<td>{{ item.id }}</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.ctime | timeformate }}</td>
+						<td>
+							<!-- 通过使用 prevent 阻止默认行为 -->
+							<a href="" v-on:click.prevent="del(item.id)">删除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<script type="text/javascript">
+			// 给时间处理定义一个全局的过滤器
+			Vue.filter('timeformate',function(){
+				var nowtime = new Date();
+				var year = nowtime.getFullYear();
+				var month = nowtime.getMonth()+1; // 因为月份是从0开始，所以要+1
+				var day = nowtime.getDate();
+				// return year + "-" + month + "-" + day;
+				return `${year}-${month}-${day}`; // 这个写法和上面相同
+			});
+			
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					id: '',
+					name: '',
+					keywords: '',
+					list: [
+						{id: 1,name: '魅族',ctime: new Date()},
+						{id: 2,name: '华为',ctime: new Date()},
+						{id: 3,name: '小米',ctime: new Date()}
+					]
+				},
+				methods: {
+					add: function(){
+						var phone = { id:this.id, name:this.name,ctime:new Date() };
+						this.list.push(phone);
+						this.id = '';
+						this.name = '';
+					},
+					// 给删除函数传参
+					del: function(id){
+						// some：数组的一个遍历方法，如果找到符合条件的项，将返回true，并结束循环
+						/*
+							this.list.some((item,i)=>{
+							// 如果list中的id 和 数组传进来的id 相等
+							if(item.id==id){
+								// 删除掉找到的那一项，删除掉
+								this.list.splice(i,1);
+								return true;
+							}
+						})*/
+						var index = this.list.findIndex(item => item.id == id);
+						this.list.splice(index,1);
+						console.log(index)
+					},
+					search(keywords){
+						// 使用foreach遍历数组
+					/*	var newlist = [];
+						this.list.forEach(item=>{
+							if(item.name.indexOf(keywords)!=-1){
+								newlist.push(item);
+							}
+						});
+						return newlist;
+					**/
+						// 使用filter遍历数组
+					/*	var newlist = []
+						this.list.filter(item => {
+							if(item.name.indexOf(keywords) != -1){
+								newlist.push(item);
+							}
+						});
+						return newlist;
+					*/
+						return this.list.filter(item => {
+							if(item.name.includes(keywords)){
+								return item;
+							}
+						});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

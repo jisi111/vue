@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="开关" v-on:click="change">
+        <input type="button" value="新的开关" v-on:click="flag = !flag">
+        <!-- 
+            在切换v-if块时，Vue.js有一个局部编译/卸载的过程，因为v-if之中的模板也可能包括数据绑定或子组件。v-if是真实的条件渲染
+            因为它会确保条件快在切换当中合适的销毁与重建条件快内的事件监听器和子组件
+            v-if也是惰性的：如果在初始化渲染时条件为假则什么也不做——在条件第一次变为真时才开始局部编译（编译会被缓存起来）。
+
+相比之下，v-show 简单得多——元素始终被编译并保留，只是简单地基于 CSS 切换。
+            通过v-if控制的元素，使用过删除或者重新创建元素来控制元素的
+            通过v-show控制的元素，是通过设置元素的display:none
+            ----------------
+            v-if:有较高的切换性能消耗
+            v-show:有较高的初始化渲染消耗
+         -->
+        <!-- 如果涉及到频繁的切换，最好不要使用v-if,应使用v-show -->
+        <!-- 如果元素永远不会被用户使用的时候看到，则推荐使用v-if -->
+        <h3 v-if='flag'>通过v-if控制的内容</h3>
+        <h3 v-show="flag">通过v-show控制的内容</h3>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                flag: true
+            },
+            methods: {
+                change: function () {
+                    this.flag = !this.flag;
+
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

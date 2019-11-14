@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.v-enter,
+			.v-leave-to{
+				opacity: 0;
+				transform: translateX(30px);
+			}
+			
+			.v-enter-active,
+			.v-leave-active{
+				transition: all .5s ease;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div class="box" id="app">
+			
+			<!-- 通过按钮点击实现组件切换  -->
+			<a href="" @click.prevent="com='login'">登录</a>
+			<!-- 给不同的按钮添加点击事件并给com赋值，通过is绑定组件进行切换 -->
+			<a href="" @click.prevent="com='register'">注册</a>
+			<!-- component 相当于占位符，:is 绑定的是要展示的组件 -->
+			<!--
+				
+				mode 定义过渡模式
+				in-out：新元素先进行过渡，完成之后当前元素过渡离开
+				out-in：当前元素先进行过渡，完成之后新元素过渡进入
+				
+			-->
+			<transition mode="out-in">
+				<component :is="com"></component>
+			</transition>
+			
+			
+			
+		</div>
+		<template id="login">
+			<div class="">
+				<h2>用户登录</h2>
+				用户名：<input type="text" />
+				<br />
+				密码：<input type="text" />
+				</div>
+		</template>
+		<template id="register">
+			<div class="">
+				<h2>用户注册</h2>
+				新用户名：<input type="text" />
+				<br />
+				密码：<input type="text" />
+			</div>
+		</template>
+		
+		
+		<script type="text/javascript">
+			Vue.component('login',{
+				template: '#login'
+			})
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					// 组件的名称
+					com: 'login'
+				},
+				methods: {
+					
+				},
+				filters: {
+					
+				},
+				// 定义内部的私有组件
+				components: {
+					login: {
+						// 通过template 创建组件后使用id来控制组件的显示
+						template: '#login'
+					},
+					register: {
+						template: '#register'
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

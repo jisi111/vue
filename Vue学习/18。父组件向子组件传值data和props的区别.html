@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!-- 若要使用父组件的数据，需要使用数据绑定 -->
+			<!-- 注意组件使用驼峰命名的方式 -->
+			<com v-bind:parents-msg="msg"></com>
+		</div>
+		
+		<template id="com1">
+			<div class="">
+				<h3>子组件-----{{parentsMsg}}</h3>
+				<h4>{{title}}</h4>
+				<p>{{mssg}}</p>
+			</div>
+		</template>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: '父组件的值'
+				},
+				methods: {
+					
+				},
+				components: {
+					// 子组件是默认无法访问到父组件上的data数据和methods方法
+					// 如果想使用，需要声明  Props: [] 
+					com: {
+						template: '#com1',
+						// props 中的数据全都是通过父组件传递给子组件的
+						// props 中的数据都是只读的，无法修改
+						props: ['parentsMsg'],
+						
+						// 而 data 中的数据都是组件自身私有的数据，如：ajax请求回来的数据都应该放在data中
+						// data 中的数据都是可读可写的
+						data: function(){
+							return {
+								title: '标题',
+								mssg: '内容'
+							}
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

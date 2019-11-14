@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="watch-example">
+			<p>
+				Ask a yes/no question:
+				<input type="text" v-model="question">
+			</p>
+			<p>{{answer}}</p>
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el:'#watch-example',
+				data:{
+					question:'',
+					answer:'I cannot give you an answer until you ask me a question'
+				},
+				watch:{
+					question: function (newQuestion,oldQuestion){
+						this.answer = 'waiting for you to stop typing...'
+						this.debouncegetAnswer()
+					}
+				},
+				created:function(){
+					this.debouncegetAnswer = _.debounce(this.getAnswer,5000)
+				},
+				methods:{
+					getAnswer:function(){
+						if (this.question.indexOf('?') === -1){
+							this.answer = '问题一般要有一个问号'
+							return
+						}
+						this.answer = 'thinking....';
+						var that = this;
+						axios.get('https://yesno.wtf/api')
+						.then(function(response){
+							that.answer = _.capitalize(response.data.answer)
+						})
+						.catch(function(error){
+							that.answer =  'Error! Could not reach the API. ' + error
+						})
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

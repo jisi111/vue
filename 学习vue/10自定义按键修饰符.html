@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="vue.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 需要给输入框进行双向数据绑定，通过enter相应回车键抬起后调用add方法 -->
+        <!-- 
+            系统中有的按键别名：
+            ——enter
+            ——tab
+            ——delete 删除或者退格键
+            ——esc
+            ——space
+            ——up
+            ——down
+            ——left
+            ——right
+            也可以通过 keyup.Keycode键盘码  相应按键
+         -->
+         <input type="text" v-model='msg' v-on:keyup.f2 = "add" />
+         <!-- 通过v-for遍历输出数组内容 -->
+         <ul v-for = "item in list">
+             <li>{{item}}</li>
+         </ul>
+    </div>
+</body>
+</html>

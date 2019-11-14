@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.login,.register{
+				margin: 10px;
+				display: inline-block;
+				width: 100px;
+				line-height: 35px;
+				background-color: #5e5e5e;
+				text-align: center;
+				color: white;
+				cursor: pointer;
+			}
+			.router-link-active{
+				background-color: #ff464e;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			
+			<router-link to="/login?id=1001&name=laoda" tag="div" id="login" class="login">登录</router-link>
+			<router-link to="/register/12/xiaolao" tag="div" id="register" class="register">注册</router-link>
+			<router-view></router-view>
+			
+		</div>
+		
+		<template id="logincom">
+			<div>
+				<h3>登录组件----data中的数据msg->{{msg}}---query中的id->{{$route.query.id}}</h3>
+				<span>query中的name：{{$route.query.name}}</span>
+			</div>
+		</template>		
+		
+		<template id="registercom">
+			<div id="">
+				<h3>注册组件---注册组件后面 ：所带的参数---id->{{$route.params.id}}</h3>
+				<h5>params所带的第二个参数---name->{{$route.params.name}}</h5>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			var login = {
+				template: '#logincom',
+				data(){
+					return {
+						msg: '13'
+					}
+				},
+				created(){
+					console.log(this.$route.query)
+				}
+			}
+			
+			var register = {
+				template: '#registercom',
+				data(){
+					return {
+						msg: 'reg组件中的数据'
+					}
+				},
+				created(){
+					console.log(this.$route.params)
+				}
+			}
+			
+			var routerObj = new VueRouter({
+				routes: [
+					{ path: '', redirect: '/login' },
+					{ path: '/login', component: login},
+					//  后面加上   :id 是可以通过标签中的to传递参数的
+					{ path: '/register/:id/:name', component: register}
+				]
+			})
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				router: routerObj
+			})
+		</script>
+	</body>
+</html>

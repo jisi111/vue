@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+</head>
+<body>
+    <!-- 
+        MVVM:MVVM是Model-View-ViewModel的简写。它本质上就是MVC 的改进版。
+             MVVM 就是将其中的View 的状态和行为抽象化，让我们将视图 UI 和业务逻辑分开。
+             可重用性，低耦合，可测试，独立开发
+     -->
+     <!-- 这一块div控制的区域就是指MVVM中的  V -->
+     <div id="app">
+         <p>{{msg}}</p>
+     </div>
+     <script>
+        /* vue不需要人为再手动去操作DOM元素*/
+        var vm = new Vue({
+            el:"#app",//elelment的缩写，表示当前我们的这个vue实例要控制页面上哪个区域
+            /*这里的data值得是MVVM中的 M，专门用来保存每个页面的数据*/ 
+            data:{//data中存放el中要使用到的数据
+                msg:"第一行代码" //需要渲染的数据
+            }
+        });
+     
+     </script>
+</body>
+</html>

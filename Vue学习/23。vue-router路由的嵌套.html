@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.com_div_login{
+				display: inline-block;
+				width: 80px;
+				height: 35px;
+				background-color: #8C8C8C;
+				text-align: center;
+				color: white;
+				line-height: 35px;
+				cursor: pointer; 
+			}
+			.router-link-active{
+				background-color: #ff464e;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<router-link to="/account">account</router-link>
+			<!-- 路由匹配到的组件将渲染在router-view中 -->
+			<router-view></router-view>
+		</div>
+		
+		<template id="acc">
+			<div>
+				<h2>这是account组件</h2>
+				
+				<router-link to="/account/login" tag="div" class="com_div_login">登录</router-link>
+				<router-link to="/account/register" tag="div" class="com_div_login">注册</router-link>
+				<router-view></router-view>
+				
+			</div>
+		</template>
+		
+		<template id="logincom">
+			<div id="">
+				<h3>登录组件</h3>
+			</div>
+		</template>
+		
+		<template id="registercom">
+			<div id="">
+				<h3>注册组件</h3>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			// 创建三个组件
+			var account = {
+				template: '#acc'
+			}
+			
+			var login = {
+				template: '#logincom'
+			}
+			
+			var register = {
+				template: '#registercom'
+			}
+			
+			// 若要简写，这需要写成router
+			var routerObj = new VueRouter({
+				routes: [
+					{
+						path: '/',
+						component: account
+					},
+					{
+						path: '/account',
+						component: account,
+						// ！！！ 路由的嵌套，children定义的是子路由  ！！！
+						children: [
+							// 需要注意的是，子路由的path不需要带 / ，这样会将url中父组件的url覆盖掉
+							// 相当于重新开了一个页面
+							{ path: 'login', component: login},
+							{ path: 'register', component: register}
+						]
+					}
+				]
+			})
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				// 这里需要注意的是，如果需要写简写，则需要在var的时候和该名称(router)一样
+				router: routerObj
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<title></title>
+	</head>
+	
+	<body>
+		<div class="" id="app">
+			<sbtn></sbtn>
+			<sbtn></sbtn>
+		</div>
+		
+		
+		<template id="tmpl">
+			<div id="">
+				<input type="button" name="" id="" value="Add" @click="creatnum"/>
+				<h1 @click="ff">{{count}}</h1>
+			</div>
+		</template>
+		
+		
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				filters: {
+					
+				},
+				// 定义私有组件
+				components: {
+					// 调用组件时使用的名称
+					sbtn: {
+						// 被控组件的 id
+						template: '#tmpl',
+						// 组件创建时初始化的数据
+						data: function(){
+							return {
+								count: 0
+							}
+						},
+						// 组件方法
+						methods: {
+							creatnum(){
+								this.count++;
+							}
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

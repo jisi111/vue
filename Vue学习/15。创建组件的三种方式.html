@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<!-- 第一种组件创建的方式以及使用  -->
+		<div class="" id="app">
+			<!--组件在使用的时候，如果有驼峰命名法，需要在前面加上 “-”并且将大写的字母改为小写进行调用-->
+			<!--如果没有使用，直接调用即可-->
+			<!--<my-com></my-com>-->
+			<!--<mycom></mycom>-->
+		</div>
+		
+		<!-- 第二种创建组件的方式以及使用  -->
+		<div class="" id="se-app">
+			<my-com></my-com>
+			<login></login>
+		</div>
+		
+		<!--第三种创建组件的方式以及使用-->
+		<div class="" id="thr-app">
+			<mycom></mycom>
+		</div>
+		<template id="test">
+			<div>
+				<h3>第三种方式创建组件</h3>
+				<span>通过id来传递内容</span>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			//  1. 使用  Vue.extend() 创建组件
+			/*
+			 	var com1 = Vue.extend({
+					template: '<h3>使用Vue.extend()创建出来的组件</h3>'
+				});
+			*/
+			
+			//  2. 使用  Vue.component('组件的名称'，创建出来的组件模板对象)
+			//  Vue.component('myCom',com1); // 第一种创建组件的方式
+			/*	
+			 * 	----  上下还有的区别在于 是否使用了驼峰命名法   ----
+				Vue.component('mycom',Vue.extend({ // 第 二种创建组件的方式
+					template: '<h3 id="test">使用Vue.extend()创建出来的组件</h3>'
+				}))
+			*/
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				filters: {
+					
+				}
+			})
+			
+			//========================================
+			
+			// 无论哪种方式创建出来的组件，组件的template属性指向的模板内容，必须有且只有一个根元素
+			Vue.component('myCom',{
+				template: '<div id="box"><h1>通过第二种方式创建的标签</h1><p>第二个标签</p></div>'
+			})
+			var sevm = new Vue({
+				el: '#se-app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				filters: {
+					
+				},
+				// 通过  components 定义内部私有组件
+				components: {
+					login: {
+						template: '<div><p>泥嚎，私有组件</p><span>{{msg}}</span></div>',
+						// 在组件中创建data的语法如下：data必须是一个方法 
+						data:function(){
+							return {
+								msg: '组件中data的数据'
+							}
+						}
+					}
+				}
+			});
+			
+			Vue.component('mycom',{
+				template: "#test"
+			})
+			var thrvm = new Vue({
+				el: '#thr-app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				filters: {
+					
+				}
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		
+		<div id="app">
+			<!-- 绑定方法需要通过 v-on:+自定义名称 。即可 绑定父组件上的内容 -->
+			<com @func="show"></com>
+		</div>
+		
+		<template id="com">
+			<div>
+				<h1>子组件</h1>
+				<input type="button" value="调用了父元素的show方法" @click="myclick"/>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: '---父组件数据',
+					fromsondata: null
+				},
+				methods: {
+					show: function(data){
+						alert('父组件方法' + this.msg + data);
+						// 通过data拿到子组件传过来的数据
+						this.fromsondata = data;
+					}
+				},
+				components: {
+					com: {
+						template: '#com',
+						data: function(){
+							return {
+								sonData: '----子元素的数据'	
+							}
+						},
+						methods: {
+							myclick(){
+								// emit 指的是触发、调用,用于绑定自定义的方法
+								this.$emit('func', this.sonData)
+							}
+						},
+						props: []
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

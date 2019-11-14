@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		
+		<div id="app">
+			<h1>{{msg}}</h1>
+			<p>{{newstr}}</p>
+			<hr />
+			<!-- getmsg  自定义方法是子组件中的方法，用于发送自身数据 -->
+			<!-- sendata 是父组件中，用于接收子组件传来的数据 -->
+			<fircom @getmsg='sendata'></fircom>
+			<hr />
+			<secom v-bind:mm='newstr'></secom>
+		</div>
+		
+		<template id="fircom">
+			<div id="">
+				<h2>老大data中的数据：{{fmsg}}</h2>
+				<h3>老二传递过来的数据----{{newmsg}}</h3>
+			</div>
+		</template>
+		
+		<template id="secom">
+			<div id="">
+				<h2>老二data中的数据：{{semsg}}</h2>
+				<h4>老大传递过来的数据----{{mm}}</h4>
+			</div>
+			
+		</template>
+		
+		<script type="text/javascript">
+			var lc = new Vue();
+			
+			var first = {
+				template: '#fircom',
+				data: function(){
+					return {
+						fmsg: '老大大大大大',
+						newmsg: ''
+					}
+				},
+				methods: {
+						
+				},
+				mounted(){
+					this.$emit('getmsg',this.fmsg);
+					// 监控事件触发
+					// senddata监控到了老二组件触发的事件，a用来接收老二组件的数据
+					lc.$on('senddata',(a)=>{
+						console.log(a)
+						this.newmsg = a;
+					})
+				}
+			}
+			
+			var second = {
+				template: '#secom',
+				data: function(){
+					return {
+						semsg: '老二222',
+					}
+				},
+				methods: {
+					
+				},
+				props: ['mm'],
+				mounted(){
+					// senddata是老二组发送自身数据
+					lc.$emit('senddata',this.semsg)
+				}
+			}
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: '父组件的数据',
+					newstr: ''
+				},
+				methods: {
+					sendata(ss){
+						console.log(ss)
+						this.newstr = ss
+					}
+				},
+				components: {
+					'fircom': first,
+					'secom': second
+				}
+			})
+		</script>
+	</body>
+</html>

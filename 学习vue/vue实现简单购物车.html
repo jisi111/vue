@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+    <style>
+        th,td{
+            padding: 0.5rem;
+            border: 1px solid #000000;
+        }
+    
+    
+    </style>
+</head>
+<body>
+    <div id="app">
+        <table>
+            <tr>
+                <th>序号</th>
+                <th>商品名称</th>
+                <th>商品价格</th>
+                <th>购买数量</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="phone in phones">
+                <td>{{phone.id}}</td>
+                <td>{{phone.name}}</td>
+                <td>{{phone.price}}</td>
+                <td>
+                    <button v-bind:disabled = "phone.count == 0" @click = "phone.count--">-</button>
+                    {{phone.count}}
+                    <button  @click = "phone.count++">+</button>
+                </td>
+                <td>
+                    <button @click="phone.count = 0">移除</button>
+                </td>
+            </tr>
+        </table>
+        <div>总价{{totalAmount()}}</div>
+    </div>
+    <script >
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                phones:[
+                    {
+                        id:1,
+                        name:'iphone5',
+                        price:'2656',
+                        count:1
+
+                    },
+                    {
+                        id:2,
+                        name:'iphone6',
+                        price:'3656',
+                        count:1
+
+                    },
+                    {
+                        id:3,
+                        name:'iphone6',
+                        price:'3656',
+                        count:1
+
+                    },
+                ],
+                totalAmout:0
+            },
+            methods:{
+                totalAmount:function(){
+                    var totalPrice = 0
+                    for(var i = 0; i < this.phones.length; i++){
+                        totalPrice += this.phones[i].price*this.phones[i].count
+                    }
+                        return totalPrice;
+                }
+            }
+        });
+    
+    </script>
+    
+</body>
+</html>

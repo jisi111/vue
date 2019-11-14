@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <!-- v-model 会根据控件类型自动选取正确的方法来更新元素 -->
+    <div id="app">
+        <!-- 1.input元素和textarea元素中使用v-model实现双向数据绑定 -->
+        <p>input元素：</p>
+        <input type="text" v-model='message' placeholder="编辑吧">
+        <p>消息是:{{message}}</p>
+        <p>textarea元素:</p>
+        <textarea name="" id="" cols="30" rows="10" v-model='message2'></textarea>
+        <p>{{message2}}</p>
+
+        <!-- 复选框如果是一个为逻辑值，如果是多个则绑定到一个数组 -->
+        <p>单个复选框</p>
+        <input type="checkbox" id="checkbox" v-model='checked'>
+        <label for="checkbox">{{checked}}</label>
+
+        <input type="checkbox" name="" id="" value="Runoob" v-model = "checkedNames">
+        <label for="runoob">runoob</label>
+        <input type="checkbox" name="google" id="google"value="google465465465" v-model='checkedNames'>
+        <label for="google">google</label>
+        <input type="checkbox" name="taobao" id="" value="taobao" v-model="checkedNames">
+        <label for="taobao">taobao</label>
+        <br>
+        <span>{{checkedNames}}</span>
+        <br>
+
+        <!-- 单选按钮的双向数据绑定 -->
+        <input type="radio" value="Runoob" id="runoob" v-model="picked">
+        <label for="runoob">Runoob</label>
+        <br>
+        <input type="radio" id="google" value="google" v-model='picked'>
+        <label for="google">google</label>
+        <br>
+        <span>选中值为：{{picked}}</span>
+        <br>
+
+
+
+        <!-- select列表 -->
+        <select name="fruit" id="" v-model="selected">
+            <option value="">选择一个网站</option>
+            <option value="wwww.baidun.com">网站1</option>
+            <option value="wwww.yunsi.com">网站2</option>
+        </select>
+        <span>选择的网站是{{selected}}</span>
+
+
+
+        <!-- 修饰符 -->
+        <!-- 
+            .lazy 在默认情况下，v-model在input时间中同步输入框额值与数据，
+                但你可以添加一个修饰符lazy，从而转变为在change事件中同步
+            .number 将用户的输入值转为Number类型
+            .trim 自动过滤用户输入的首尾空格
+         -->
+         <input type="text" v-model.lazy='message2' id="name">
+         <label for="age">年龄</label>
+         <input v-model.number="age" type="number">
+         <label for="年龄"></label>
+         <input type="number" v-model="age2">
+         <input type="text" v-model.trim = "message">
+         <button @click="getType()">点我快快快</button>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                message: '    欢迎你来学习     ',
+                message2: '呜呜呜呜呜呜',
+                checked: false,
+                checkedNames: ['hello','world'],
+                picked:'google',
+                selected:'',
+                age:'',
+                age2:''
+            },
+            methods:{
+                getType(){
+                    alert(typeof this.age);
+                    alert(typeof this.age2);
+                }
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

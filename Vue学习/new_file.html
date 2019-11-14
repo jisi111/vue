@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<login @func="getsondata" v-bind:parentmsg='msgg'></login>
+		</div>
+		
+		<template id="com">
+			<div id="">
+				<h1>登陆组件---{{parentmsg}}</h1>
+				<input type="button" name="" id="" value="11" @click="sendmsg"/>
+			</div>
+			
+		</template>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msgg: '父组件的data中的值'
+				},
+				methods: {
+					getsondata(data){
+						this.msgg = data;
+					}
+				},
+				components: {
+					login: {
+						template: '#com',
+						data: function(){
+							return {
+								msg: '子组件的data的值',
+							}
+						},
+						methods: {
+							sendmsg(){
+								this.$emit('func',this.msg);
+							}
+						},
+						props: ['parentmsg']
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

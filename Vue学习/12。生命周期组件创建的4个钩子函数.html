@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<!--
+			
+			什么是生命周期：
+				从Vue实例创建、运行到销毁期间，总是伴随着各种各样的事件，这些时间统称为生命周期。
+			生命周期钩子：
+				就是生命周期的别名而已
+				即：   生命周期钩子 = 生命周期函数 = 生命周期时间
+			
+		-->
+		<div id="app">
+			<h1 id="test">
+				{{ msg }}
+				<input type="button" name="" id="" value="更新" v-on:click="msg='is NO'"/>
+			</h1>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: 'is Ok'
+				},
+				methods: {
+					show(){
+						console.log('执行了show方法！')
+					}
+				},
+				filters: {
+					
+				},
+				beforeCreate(){ // 生命周期的第一个函数，这个函数表示实例完全被创建出来之前，会执行它
+					// console.log(this.msg); // undefined
+					// console.log(this.show()); // not a function
+					
+					/*	上面的例子说明，在生命周期函数执行的时候，data 和  methods 中的数据都还没有
+					 *	被初始化
+					 */
+				},
+				created(){ // 生命周期的第二个函数
+					console.log("-------created------")
+					console.log(this.msg); // 打印“is Ok”
+					this.show(); // 打印“执行了show方法”
+					/* 所以，在created 函数中，data 和  methods 都已经被初始化好了，
+					 * 如果需要操作，则最早需要在该函数中进行操作
+					 */
+				},
+				beforeMount(){  // 生命周期的第三个函数，表示模板已经在内存中编译完成了，但是尚未渲染到页面上
+					console.log("------beforeMount------")
+					console.log(document.getElementById('test').innerText); // {{msg}}
+					// 打印出来的是{{msg}}，所以证明这时候页面中的内容还没有被渲染上去
+				},
+				mounted(){  // 生命周期的第四个函数，表示内存中的模板已经加载到了页面中，用户已经可以看到渲染好的页面
+					console.log("------mounted------")
+					console.log(document.getElementById('test').innerText); // 已经被创建好了
+					// mounted 也是实例创建期间的最后一个生命周期函数，当执行完mounted函数的时候，就表示实例已经被创建好了
+				},
+				
+				// 后面是程序正在运行中的两个事件
+				beforeUpdate(){  // 该函数被执行的时候，页面上的内容还没有被更新，但是后台的数据已经被更新了
+					console.log("--------beforeUpdate-------");
+					console.log('界面上的元素的内容：' + document.getElementById('test').innerText); // ok
+					console.log('后台数据的内容：'+ this.msg); // no
+					/* 当页面上的按钮点击的时候，已经将后台数据的内容更新为 no 了。 但是还没有更新到页面上去，所以在该函数
+					 * 中，看到的内容还只是原先的内容，数据并未更新
+					 */
+				},
+				updated(){
+					console.log("---------updata--------")
+					console.log('界面上的元素的内容：' + document.getElementById('test').innerText); // ok
+					console.log('后台数据的内容：'+ this.msg); // no
+					// 更新了页面和后台数据的内容
+				}
+				/*
+				 *  后面的两个函数是
+				 *  beforeDestroy(): 执行到该函数的时候，程序就从运行阶段进入到了销毁阶段
+				 *  但是此时的程序中data和methods中的内容还是可用的。
+				 *  destroyed(): 执行到该函数的时候，data和methods等所有内容中的数据都会被销毁，都变成不可用的了
+				 * */
+			});
+		</script>
+	</body>
+</html>

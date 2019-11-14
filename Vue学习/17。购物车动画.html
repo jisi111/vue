@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.ball{
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background-color: red;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div class="" id="app">
+			<input type="button" name="" id="" value="加入购物车" @click="flag = !flag"/>
+			
+			<transition @before-enter="beforEnter" @enter="enter" @after-enter="afterEnter">
+				<div class="ball" v-show="flag"></div>
+			</transition>
+			
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					flag: false
+				},
+				methods: {
+					// 使用三个钩子函数
+					// 动画开始进入之前
+					beforEnter(el){
+						el.style.transform = 'translate(0, 0)'
+					},
+					// 动画执行函数
+					enter(el,done){
+						el.offsetWidth
+						el.style.transform = 'translate(150px,450px)'
+						el.style.transition = 'all .8s ease'
+						// done 相当于调用了 afterEnter 函数
+						done()
+					},
+					// 动画完成之后
+					afterEnter(el){
+						this.flag = !this.flag;
+					}
+					
+				}
+			})
+		</script>
+	</body>
+</html>

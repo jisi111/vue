@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue-router.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			.container{
+				display: flex;
+			}
+			.headerbox{
+				background-color: #A6E1EC;
+				margin: 0;
+				padding: 0;
+				height: 130px;
+			}
+			.leftbox{
+				flex: 2;
+				background-color: #ff464e;
+				height: 550px;
+			}
+			.rightbox{
+				flex: 8;
+				background-color: #40E0D0;
+				height: 550px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<router-view class='headerbox'></router-view>
+			<div class="container">
+				<router-view name='left' class='leftbox'></router-view>
+				<router-view name='right' class='rightbox'></router-view>
+			</div>
+		</div>
+		
+		<template id="headerbox">
+			<h2>headerbox页面头部区域</h2>
+		</template>
+		
+		<template id="leftbox">
+			<h2>leftbox页面左侧区域</h2>
+		</template>
+		
+		<template id="rightbox">
+			<h2>rightbox页面右侧区域</h2>
+		</template>
+		
+		<script type="text/javascript">
+			var header = {
+				template: '#headerbox'
+			}
+			
+			var left = {
+				template: '#leftbox'
+			}
+			
+			var right = {
+				template: '#rightbox'
+			}
+			
+			var routerObj = new VueRouter({
+				routes: [
+					{
+						path: '/',components: {
+							// 若要在一个页面展示多个不同的组件
+							// 可以通过给每个组件命名，然后在组件的视图里面调用给组件命名的名称即可                                                                                                  
+							'default': header,
+							'left': left,
+							'right': right
+						}
+					}
+				]
+			});
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					
+				},
+				router: routerObj
+			})
+		</script>
+	</body>
+</html>

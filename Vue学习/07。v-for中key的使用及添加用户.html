@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			h2{
+				font-weight: 400;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!-- 首先要通过v-model给id和name的输入框进行双向数据绑定 -->
+			id：<input type="text" value="" v-model="id"/>
+			name：<input type="text" v-model="name"/>
+			<!--给按钮绑定点击事件-->
+			<input type="button" value="添加用户" @click="add"/>
+			
+			<!-- 可以通过key属性绑定给每个for循环产生的对象p绑定下标，需要注意的是不能绑定对象，要是字符串或数字 -->
+			<p v-for="(value,item) in userlist[1]" v-bind:key="">
+				<input type="checkbox" />{{item}}:{{value}}
+			</p>
+			<p v-text='dayFormat(265)'></p>
+		</div>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					id: '',
+					name: '',
+					userlist: [
+						// "1":{
+						// 	1001: '一发',
+						// 	1002: '二珂',
+						// 	1003: '三毛',
+						// 	1004: '四不像',
+						// },
+						// "501":{
+						// 	2001: '1212',
+						// 	2002: 'dsa'
+						// },
+						// "502":{
+						// 	3001: 'dsa',
+						// 	3002: 'dsa'
+						// }
+
+
+					]
+				},
+				methods: {
+					add: function(){
+						// 给userlist的数组中添加新的id和name						
+						// this.userlist.push({id: this.id,name: this.name});
+						// unshift可以向数组的开头添加一个元素
+						this.userlist.unshift({id: this.id,name: this.name});
+						// console.log( this.userlist instanceof Array);
+						
+					},
+					dayFormat: function(day){
+						if(day%365==0){
+							return day/365 + '年'
+						}else if(day%30==0){
+							return day/30 + '个月'
+						}else{
+							return day + '天'
+						}
+					}
+				},
+				
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="vue.min.js"></script>
+    <style>
+        .active {
+            width: 100px;
+            height: 100px;
+            background-color: chartreuse;
+        }
+        .has{
+            font-size:22px;
+            color: chocolate;
+            background-color: coral;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 切换单个样式 -->
+    <!-- <div id="app">
+            <div v-bind:class="{ active: isActive }"></div>
+            <button @click="isActive = !isActive">click here!</button>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                isActive: true,
+            }
+        });
+
+    </script> -->
+
+    <!-- 切换多个样式 -->
+    <div id="app">
+        <div v-bind:class="{active:isActive,has:isHas}">你好世界</div>
+        <button @click='isActive=!isActive'>toggle</button>
+        <button @click='isHas=!isHas'>toggle2</button>
+        <div v-bind:class="classObj">6564646</div>
+        <div v-bind:style="[styleObject1,styleObject2]">菜鸟教程</div>
+        <div v-bind:style="methodStyle()">154654</div>
+        <div v-bind:style="computeStyle">154654</div>
+        <div v-bind:style="watchStyle">154654</div>
+
+        <button @click='size++'>+</button>
+        <button @click='size--'>-</button>
+    </div>
+    <script>
+            /*
+               1. v-bind动态绑定指令，默认情况下标签知道属性的值是固定的，在为了能够动态的给这些属性添加值，
+                可以使用 v-bind:你要动态变化的值="表达式"
+                2.v-bind用于绑定属性和数据，其缩写为 ":" ,也就是v-bind:id === :id
+                3.v-model用在表单控件上的，用于实现双向数据绑定，所以如果你用在除了表单控件以外的标签是没有任何效果的
+            
+            */ 
+
+
+
+
+
+        new Vue({
+            el:'#app',
+            data:{
+                isActive:true,
+                isHas:true,
+                classObj:{
+                   active:true,
+                   has:true
+                },
+                styleObject1:{
+                    color:'red',
+                    fontSize:'30px'
+                },
+                styleObject2:{
+                    backgroundColor:'blue',
+                    width:'100px',
+                    height:'100px'
+                },
+                size:18
+            },
+            methods:{
+                methodStyle:function(){
+                    return {
+                        color:'green',
+                        fontSize:this.size+'px'
+                    }
+                }
+            },
+            computed:{
+                computeStyle:function(){
+                    return {
+                        color:'blue',
+                        fontSize:this.size+'px'
+                    }
+                }
+            },
+            watch:{
+
+            }
+        });
+    
+    </script>
+</body>
+
+</html>

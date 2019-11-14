@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<!--需要给输入框进行双向数据绑定，通过enter相应回车键抬起后调用add方法-->
+			<!--
+				系统中有的按键别名：
+					——enter
+					——tab
+					——delete 删除或者退格键
+					——esc
+					——space
+					——up
+					——down
+					——left
+					——right
+					也可以通过 keyup.Keycode键盘码 响应按键
+			-->
+			<input type="text" v-model="msg" v-on:keyup.f2="add"/>
+			<!--通过v-for遍历输出数组内容-->
+			<ul v-for="item in list">
+				<li>{{item}}</li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			// 自定义全局的按键修饰符
+			Vue.config.keyCodes.f2 = 113;
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: '',
+					list: ["维他命"]
+				},
+				methods: {
+					add: function(){
+						// 将当前的输入的内容添加到数组中
+						this.list.push(this.msg);
+						this.msg = ""
+					}
+				},
+				filters: {
+					
+				}
+			});
+		</script>
+	</body>
+</html>

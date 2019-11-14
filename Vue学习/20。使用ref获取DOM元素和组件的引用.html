@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		<div id="app">
+			<h3 id="h3" ref="dom_h3">通过 ref 获取到DOM元素</h3>
+			<input type="button" value="获取" v-on:click="getinfo" ref="inp_get"/>
+			<li ref="qwe">dsadas</li>
+			<hr />
+			<login ref="mylogin"></login>
+		</div>
+		
+		<template id="login">
+			<div id="">
+				<h3>第一个组件</h3>
+			</div>
+		</template>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					getinfo(){
+						// console.log(this.$refs.dom_h3.innerText);
+						// console.log(this.$refs.inp_get);
+						console.log(this.$refs);
+						this.$refs.mylogin.show();
+					}
+				},
+				components: {
+					login: {
+						template: '#login',
+						data: function(){
+							return {
+								msg: '子组件的msg数据'
+							}
+						},
+						methods: {
+							show: function(){
+								console.log('子组件的方法 show()')
+							}
+						}
+					}
+				},
+				mounted(){
+					console.log(this.$refs)
+				}
+			})
+		</script>
+	</body>
+</html>

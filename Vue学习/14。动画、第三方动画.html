@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="css/animate.css"/>
+		<style type="text/css">
+			/*
+			 	v-enter：（这是一个时间点）, 进入之前，元素的起始状态，此时还没开始进入
+			 	v-leave-to：动画开始之后，离开的终止状态，此时，元素动画已经结束
+			 * */
+			.v-enter,
+			.v-leave-to{
+				opacity: 0;
+				transform: translateX(100px);
+			}
+			/*
+			 *   enter-active： 入场动画
+			 * 	 leave-active：离场动画
+			 * */
+			.v-enter-active,
+			.v-leave-active{
+				transition: all .5s ease-in-out;
+			}
+			
+			.seAnimate-enter,
+			.seAnimate-leave-to{
+				opacity: 0;
+				transform: translateY(100px);
+			}
+			.seAnimate-enter-active,
+			.seAnimate-leave-active{
+				transition: all .5s ease-in-out;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<input type="button" v-on:click="flag=!flag" value="切换"/>
+			<!--自带的过度类名-->
+			<transition>
+				<h1 v-if="flag">通过开关点击实现淡入淡出效果</h1>
+			</transition>
+			<hr />
+			<input type="button" name="" id="" value="切换" @click="flag1=!flag1"/>
+			<!-- 若要区分不同的动画，需要添加name属性 -->
+			<transition name="seAnimate">
+				<h3 v-show="flag1">通过自定义v的前缀实现动画</h3>
+			</transition>
+			<hr />
+			<input type="button" value="切换" v-on:click="flag2=!flag2"/>
+			<!--
+				: duration——可以定义动画的持续时间
+				: duration="{ enter: 500, leaveL: 600}"
+			-->
+			<transition enter-active-class="bounceIn" leave-active-class="bounceOut" :duration="{ enter: 200, leave: 600}">
+				<h4 v-if="flag2" class="animated">使用第三方动画插件实现的动画效果</h4>
+			</transition>
+		</div>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					flag: true,
+					flag1: true,
+					flag2: false
+				},
+				methods: {
+					
+				}
+			})
+		</script>
+	</body>
+</html>

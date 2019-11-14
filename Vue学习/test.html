@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	
+	<body>
+		
+		<div id="app">
+			<loginbox @func='getinfo'></loginbox>
+			<h3>{{cc}}</h3>
+		</div>
+		
+		<template id="logincom">
+			<div id="">
+				<h2>{{msg}}</h2>
+				<input type="button" @click="sendmsg" value="获取父元素的值"/>
+			</div>
+		</template>
+		
+		<script type="text/javascript">
+			
+			var login = {
+				template: '#logincom',
+				data: function(){
+					return {
+						msg: '子组件中的msg'
+					}
+				},
+				methods: {
+					sendmsg(){
+						this.$emit('func',this.msg)
+					}
+				}
+			}
+			
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					str: '父组件的数据',
+					cc: ''
+				},
+				methods: {
+					getinfo(data){
+						this.cc = '子组件发送的数据----'+data;
+						console.log(data)
+					}
+				},
+				components: {
+					'loginbox': login
+				}
+			})
+		</script>
+	</body>
+</html>

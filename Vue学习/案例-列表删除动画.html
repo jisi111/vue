@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			li{
+				width: 100%;
+				border: 1px dashed #888;
+				margin: 10px 0;
+				font-size: 14px;
+				line-height: 30px;
+			}
+			li:hover{
+				background-color: hotpink;
+				transition: all .5s ease;
+			}
+			.v-enter,
+			.v-leave-to{
+				opacity: 0;
+				/*transform: translateX(100px);*/
+				transform: none;
+			}
+			/*
+			 *   enter-active： 入场动画
+			 * 	 leave-active：离场动画
+			 * */
+			.v-enter-active,
+			.v-leave-active{
+				/*transition: all .5s ease-in-out;*/
+			}
+			.v-move{
+				transition: all .6s ease;
+			}
+			.v-leave-active{
+				position: absolute;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div class="" id="app">
+			<ul>
+				<!-- 使用过渡组的时候，需要给元素绑定key属性 -->
+				<transition-group>
+				<li v-for="(item,index) in listData" :key="item.id" v-on:click="del(index)">
+					{{item.id}} ———— {{item.name}}
+				</li>	
+				</transition-group>
+			</ul>
+		</div>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					listData:[
+						{id: "1",name: "老大"},
+						{id: "2",name: "老二"},
+						{id: "3",name: "老三"},
+						{id: "4",name: "老四"}
+					]
+				},
+				methods: {
+					del: function(index){
+						this.listData.splice(index,1);
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

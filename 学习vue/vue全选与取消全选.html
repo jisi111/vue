@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>全选和反选</title>
+    <script src="vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!--
+             @change的特性是监听到数据发生变化时执行 
+                安卓：选择完年月日，点击确定后，数据变化，监听事件起作用；
+                iOS： 点击选择日期，选择年，监听到数据变化一次，执行一次selectDate，选择月，监听到数据变化，再次执行，选择日，监听到数据变化，再执行……选择不停，执行不停。
+                https://www.jianshu.com/p/4334f6a40fb7
+            -->
+         <p>全选</p>
+         <input type="checkbox"  id="checkbox" v-model="checked" @change="changeAllChecked()">
+         <label for="checkbox">
+             {{checked}}
+         </label>
+         <p>多个复选框</p>
+         <input type="checkbox" id="Runnob" value="Runnob" v-model="checkedNames">
+         <label for="runnob">Runnob</label>
+         <input type="checkbox"  id="google" value="Google" v-model="checkedNames">
+         <label for="google"> google</label>
+         <input type="checkbox" name="" id="taobao" value="taobao" v-model= "checkedNames">
+         <label for="taobao">taobao</label>
+         <br>
+         <p>选择的值为{{checkedNames}}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                checked:false,
+                checkedNames:[],
+                checkedArr:['Runnob','Google','taobao'],
+
+            },
+            methods:{
+                changeAllChecked(){
+                    if(this.checked){
+                        this.checkedNames = this.checkedArr;
+                    }else{
+                        this.checkedNames=[];
+                    }
+                },
+            },
+            watch:{
+                checkedNames:function(){
+                    if(this.checkedNames.length == this.checkedArr.length){
+                        this.checked = true;
+                    }else{
+                        this.checked = false;
+                    }
+                }
+            }
+        });
+    
+    </script>
+</body>
+</html>
